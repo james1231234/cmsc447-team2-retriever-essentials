@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { pool } from "./db.js";
 
 dotenv.config();
 
@@ -38,6 +39,40 @@ app.get("/api/overview", (_req, res) => {
     ],
     source: "demo",
   });
+});
+
+app.get("/api/db-health", async (_req, res) => {
+  try {
+    await pool.query("SELECT 1");
+
+    res.json({
+      status: "ok",
+      message: "MySQL database connected successfully",
+    });
+  } catch (error) {
+    console.error("Database connection failed:", error);
+
+    res.status(500).json({
+      status: "error",
+      message: "Database connection failed",
+    });
+  }
+});
+
+app.get("/api/requests/count", async (_req, res) => {
+  try {
+    const [rows] = await pool.query(
+      "SELECT COUNT(*) AS total_requests FROM service_requests"
+    );
+
+    res.json(rows);
+  } catch (error) {
+    console.error("Error reading requests:", error);
+
+    res.status(500).json({
+      message: "Unable to read service requests",
+    });
+  }
 });
 
 app.listen(PORT, () => {
