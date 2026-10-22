@@ -1,0 +1,10 @@
+{
+  "description": "Provides the Dean of Students with key metrics and insights on student engagement and Retriever Essentials pantry impact to inform campus support efforts.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
